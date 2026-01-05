@@ -1,6 +1,7 @@
 package com.eulucaslim.springmongodb.resources;
 
 import com.eulucaslim.springmongodb.domain.User;
+import com.eulucaslim.springmongodb.dto.UserDTO;
 import com.eulucaslim.springmongodb.services.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,9 +21,12 @@ public class UserResource {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> findAll(){
+    public ResponseEntity<List<UserDTO>> findAll(){
         List<User> list = service.findAll();
-        return ResponseEntity.ok().body(list);
+        List<UserDTO> listDto = list.stream()
+                .map(UserDTO::new)
+                .toList();
+        return ResponseEntity.ok().body(listDto);
     }
 
 }
