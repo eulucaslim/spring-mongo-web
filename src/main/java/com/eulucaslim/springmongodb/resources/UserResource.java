@@ -2,11 +2,9 @@ package com.eulucaslim.springmongodb.resources;
 
 import com.eulucaslim.springmongodb.domain.User;
 import com.eulucaslim.springmongodb.dto.UserDTO;
+import com.eulucaslim.springmongodb.mapper.UserMapper;
 import com.eulucaslim.springmongodb.services.UserService;
-import jakarta.servlet.Servlet;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -18,9 +16,11 @@ import java.util.List;
 public class UserResource {
 
     private final UserService service;
+    private final UserMapper mapper;
 
-    public UserResource(UserService service) {
+    public UserResource(UserService service, UserMapper mapper) {
         this.service = service;
+        this.mapper = mapper;
     }
 
     @GetMapping
@@ -51,5 +51,12 @@ public class UserResource {
     public ResponseEntity<Void> delete(@PathVariable String id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDTO> update(@PathVariable String id, @RequestBody UserDTO dto) {
+        User entity = mapper.toEntity(id, dto);
+        User userUpdated = service.update(id, entity);
+        return ResponseEntity.ok().body(mapper.toDTO(userUpdated));
     }
 }

@@ -7,6 +7,7 @@ import com.eulucaslim.springmongodb.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -30,12 +31,19 @@ public class UserService {
         return repository.insert(obj);
     }
 
-    public void delete(String id){
+    public void delete(String id) {
         findById(id);
         repository.deleteById(id);
     }
 
-    public User fromDTO(UserDTO userDTO){
+    public User update(String id, User obj) {
+        User user = findById(id);
+        user.setName(obj.getName());
+        user.setEmail(obj.getEmail());
+        return repository.save(user);
+    }
+
+    public User fromDTO(UserDTO userDTO) {
         return new User(userDTO.getId(), userDTO.getName(), userDTO.getEmail());
     }
 }
