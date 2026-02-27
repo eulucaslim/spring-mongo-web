@@ -1,6 +1,7 @@
 package com.eulucaslim.springmongodb.resources;
 
 import com.eulucaslim.springmongodb.domain.Post;
+import com.eulucaslim.springmongodb.resources.util.URL;
 import com.eulucaslim.springmongodb.services.PostService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,13 @@ public class PostResource {
     @GetMapping("/{id}")
     public ResponseEntity<Post> findById(@PathVariable String id) {
         Post obj = service.findById(id);
+        return ResponseEntity.ok().body(obj);
+    }
+
+    @GetMapping("/titlesearch")
+    public ResponseEntity<List<Post>> findByTitle(@RequestParam(value = "text", defaultValue = "") String text) {
+        text = URL.decodeParam(text);
+        List<Post> obj = service.findByTitle(text);
         return ResponseEntity.ok().body(obj);
     }
 
