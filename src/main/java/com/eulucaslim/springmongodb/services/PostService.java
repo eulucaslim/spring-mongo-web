@@ -5,6 +5,8 @@ import com.eulucaslim.springmongodb.exceptions.ObjectNotFoundException;
 import com.eulucaslim.springmongodb.repositories.PostRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PostService {
 
@@ -17,6 +19,10 @@ public class PostService {
     public Post findById(String id) {
         return repository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("Post id: " + id + " Not Found"));
+    }
+
+    public List<Post> findAll() {
+        return repository.findAll();
     }
 
 }

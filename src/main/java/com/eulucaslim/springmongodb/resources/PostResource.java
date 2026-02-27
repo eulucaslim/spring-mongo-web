@@ -5,6 +5,8 @@ import com.eulucaslim.springmongodb.services.PostService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/posts")
 public class PostResource {
@@ -19,6 +21,12 @@ public class PostResource {
     public ResponseEntity<Post> findById(@PathVariable String id) {
         Post obj = service.findById(id);
         return ResponseEntity.ok().body(obj);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Post>> findAll(){
+        List<Post> posts = service.findAll();
+        return ResponseEntity.ok().body(posts);
     }
 
 }
