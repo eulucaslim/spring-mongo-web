@@ -3,6 +3,7 @@ package com.eulucaslim.springmongodb.config;
 import com.eulucaslim.springmongodb.domain.Post;
 import com.eulucaslim.springmongodb.domain.User;
 import com.eulucaslim.springmongodb.dto.AuthorDTO;
+import com.eulucaslim.springmongodb.dto.CommentDTO;
 import com.eulucaslim.springmongodb.repositories.PostRepository;
 import com.eulucaslim.springmongodb.repositories.UserRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -41,6 +42,13 @@ public class Instantiation implements CommandLineRunner {
 
         Post post1 = new Post(null, sdf.parse("21/03/2018"), "Partiu Viagem", "Vou viajar para sao paulo!", new AuthorDTO(maria));
         Post post2 = new Post(null, sdf.parse("23/03/2018"), "Bom dia", "Acordei feliz hj!", new AuthorDTO(maria));
+
+        CommentDTO c1 = new CommentDTO("Boa viagem mano!", sdf.parse("21/03/2018"), new AuthorDTO(alex));
+        CommentDTO c2 = new CommentDTO("Aproveite", sdf.parse("23/03/2018"), new AuthorDTO(bob));
+        CommentDTO c3 = new CommentDTO("Tenha um otimo dia!", sdf.parse("23/03/2018"), new AuthorDTO(alex));
+
+        post1.getComments().addAll(Arrays.asList(c1, c2));
+        post2.getComments().add(c3);
 
         postRepository.saveAll(Arrays.asList(post1, post2));
 
