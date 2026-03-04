@@ -6,6 +6,7 @@ import com.eulucaslim.springmongodb.services.PostService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -34,6 +35,18 @@ public class PostResource {
     @GetMapping
     public ResponseEntity<List<Post>> findAll(){
         List<Post> posts = service.findAll();
+        return ResponseEntity.ok().body(posts);
+    }
+
+    @GetMapping("/fullsearch")
+    public ResponseEntity<List<Post>> fullSearch(
+            @RequestParam(value = "text", defaultValue = "") String text,
+            @RequestParam(value = "minDate", defaultValue = "") String minDate,
+            @RequestParam(value = "maxDate", defaultValue = "") String maxDate ) {
+        text = URL.decodeParam(text);
+        Date min = URL.convertDate(minDate, new Date(0L));
+        Date max = URL.convertDate(maxDate, new Date());
+        List<Post> posts = service.fullSearch(text, min, max);
         return ResponseEntity.ok().body(posts);
     }
 
